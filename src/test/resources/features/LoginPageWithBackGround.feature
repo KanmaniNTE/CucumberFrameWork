@@ -1,25 +1,23 @@
-@Login
-Feature: This feature is to test login page scenarios
+@Login11
+Feature: This feature is to test login page scenarios with background keyword
 
-  @TC01 @Testing01
-  Scenario: Validate OrangeHRM with valid credentials
-    Given user launches OrangeHRM page
+Background: 
+		Given user launches OrangeHRM page
     Then validate user is on login page
+
+  @TC11 @Testing11
+  Scenario: Validate OrangeHRM with valid credentials
     When user enters username and password and clicks on login button
     Then user able to see home page of OrangeHRM
 
-  @TC02
+  @TC12
   Scenario: Validate OrangeHRM with valid credentials with parameters in feature line
-    Given user launches OrangeHRM page
-    Then validate user is on login page
     When user enters username as "Admin" and password "admin123" and clicks on login button
     #    When user enters "Admin" and "admin123" and clicks on login button
     Then user able to see home page of OrangeHRM
 
-  @TC03 @validateLogin
+  @TC13 @validateLogin11
   Scenario Outline: Validate OrangeHRM with valid credentials with parameters in feature line
-    Given user launches OrangeHRM page
-    Then validate user is on login page
     When user enters username as <userName> and password <Password> and clicks on login button
     Then user able to see home page of OrangeHRM
 
@@ -28,10 +26,8 @@ Feature: This feature is to test login page scenarios
       | "Admin"  | "admin123" |
       | "Admin"  | "admin123" |
 
-  @TC04 @validateLogin
+  @TC14 @validateLogin11
   Scenario Outline: Validate OrangeHRM login with invalid credentials
-    Given user launches OrangeHRM page
-    Then validate user is on login page
     When user enters username as <userName> and password <Password> and clicks on login button
     Then validate that user not able to login
 

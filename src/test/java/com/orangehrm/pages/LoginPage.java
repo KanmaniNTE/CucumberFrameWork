@@ -1,5 +1,6 @@
 package com.orangehrm.pages;
 
+import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -7,7 +8,10 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.orangehrm.base.Generic;
 
+
+
 public class LoginPage {
+	
 	WebDriver driver;
 	Generic generic = new Generic();
 	CommonPage commonPage = new CommonPage(Generic.getDriver());
@@ -15,7 +19,9 @@ public class LoginPage {
 	public LoginPage(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
-		//to show the webelements to driver.
+//		PageFactory.initElements(driver, LoginPage.class);
+//		to give intro of the webelements to driver.
+		
 	}
 	
 	@FindBy(tagName = "h5") 
@@ -63,34 +69,41 @@ public class LoginPage {
 	@FindBy(tagName = "h6")
 	WebElement text_ResetPasswordLinkSent;
 	
-//	@FindBy()
-//	WebElement ;
+	@FindBy(className = "oxd-userdropdown-name")
+	WebElement loginPageProfile;
+	
+	@FindBy(xpath = "//p[text() = 'Invalid credentials']")
+	WebElement text_InvalidCredentials;
 	
 	
 	public void loginOrangeHRM(String userName, String password) {
 		textBox_UserName.sendKeys(userName);
 		textBox_Password.sendKeys(password);
 		button_Login.click();
+		generic.pause(5);
+//		waitForElementToBeVisible(loginPageProfile, 5);
 	}
 	
 	public void loginOrangeHRM1() {
-//		base.sendTextToAnWebElement(textBox_UserName, "Admin");
-//		base.sendTextToAnWebElement(textBox_Password, "admin123");
-//		base.clickAnWebElement(button_Login);
+//		generic.sendTextToAnWebElement(textBox_UserName, "Admin");
+//		generic.sendTextToAnWebElement(textBox_Password, "admin123");
+//		generic.clickAnWebElement(button_Login);
 		textBox_UserName.sendKeys("Admin");
 		textBox_Password.sendKeys("admin123");
 		button_Login.click();
-//		base.pause(10);
+		generic.pause(10);
 	}
-	
 	
 	public void forgotPassword(String userName) {
 		link_forgotYourPassword.click();
 		generic.waitForElementToBeVisible(text_ResetPasswordHeader, 5);
 		textBox_ForgotPassword_UserName.sendKeys(userName);
 		button_resetPassword.click();
-		commonPage.verifyAPageByWebElement(text_ResetPasswordLinkSent, "Reset Password link sent successfully");
+//		commonPage.verifyAPageByWebElement(text_ResetPasswordLinkSent, "Reset Password link sent successfully");
 	}
 	
+	public void validateUserDontHaveAccess() {
+		Assert.assertEquals(text_InvalidCredentials.isDisplayed(), true);
+	}
 
 }

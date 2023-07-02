@@ -9,7 +9,9 @@ import io.cucumber.junit.CucumberOptions;
 @CucumberOptions(
 		features = "src\\test\\resources\\features"
 		,glue = {"com.orangehrm.stepDefinitions"}
-		, tags = "@TC01"
+		, tags = "@PIM01"
+//		, tags = "@TC03 or @TC04"
+		, plugin = {"com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:"}
 //		, dryRun = true
 		)	
 

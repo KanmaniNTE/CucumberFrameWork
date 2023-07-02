@@ -5,14 +5,22 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.UnhandledAlertException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -22,7 +30,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter;
+import com.orangehrm.stepDefinitions.Hooks;
 import com.orangehrm.utilities.PropertyFileReading;
+
+import io.cucumber.java.Scenario;
 
 public class Generic {
 
@@ -62,6 +74,48 @@ public class Generic {
 			e.printStackTrace();
 		}
 	}
+	
+//	************** screenshot methods ********************************
+	
+	
+	public static String getBase64Screenshots() throws IOException {
+
+		String base64StringOfScreenshot = "";
+		File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+
+		Date date = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("ddMMYYYY_HHmmss");
+
+		String sDate = sdf.format(date);
+
+		String screenshotdir = System.getProperty("user.dir") + "/folderName/" + "imageName" + sDate + ".png";
+		File screenshotName = new File(screenshotdir);
+		FileUtils.copyFile(src, screenshotName);
+
+		byte[] fileContent = FileUtils.readFileToByteArray(screenshotName);
+		base64StringOfScreenshot = "date:image/png;png;base64," + Base64.getEncoder().encodeToString(fileContent);
+
+		return base64StringOfScreenshot;
+	}
+	
+	public void attachScreenshot(Scenario scenario) throws Exception {
+		final byte[] screenshot = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES);
+
+		if (Hooks.scenario.isFailed()) {
+			Hooks.scenario.attach(screenshot, "image/png", "Failed Test Step Screenshot");
+			Hooks.scenario.attach("Failed Screenshot", "text/html", "Failed Test Steps Text");
+			ExtentCucumberAdapter.addTestStepScreenCaptureFromPath(Generic.getBase64Screenshots());
+			ExtentCucumberAdapter.addTestStepLog("Failed Screenshot");
+		}
+
+		else {
+			Hooks.scenario.attach(screenshot, "image/png", "Passed Test Step Screenshot");
+			Hooks.scenario.attach("Passed Screenshot", "text/html", "Failed Test Steps Text");
+			ExtentCucumberAdapter.addTestStepScreenCaptureFromPath(Generic.getBase64Screenshots());
+			ExtentCucumberAdapter.addTestStepLog("Passed Screenshot");
+		}
+
+	}
 
 
 //	************** WebElement methods ********************************
@@ -81,10 +135,7 @@ public class Generic {
 			driver = new ChromeDriver();
 			break;
 		}
-		
-		openApplication();
-		maximizeBrowserAndImplicitWait(15);
-
+//		attachScreenshot(Hooks.scenario);
 		return getDriver();
 	}
 

@@ -2,16 +2,19 @@ package com.orangehrm.pages;
 
 import java.util.List;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.FindBys;
 import org.openqa.selenium.support.PageFactory;
-import org.testng.Assert;
+
+import com.orangehrm.base.Generic;
 
 public class CommonPage {
 	WebDriver driver;
+	Generic generic = new Generic();
 	
 	public CommonPage(WebDriver driver) {
 		this.driver = driver;
@@ -75,12 +78,22 @@ public class CommonPage {
 		Assert.assertEquals(ele.getText(), text);
 	}
 	
+	public void verifyPageHeader(String headerText, String headerTagName) {
+//		System.out.println("****************"+Generic.getDriver().findElement(By.tagName(headerTagName)).isDisplayed());
+		Assert.assertEquals(headerText, Generic.getDriver().findElement(By.tagName(headerTagName)).getText());
+	}
+	
 	public void goToGivenPageInOrangehrm(String pageName) {
 //		List<WebElement> pageLinks = driver.findElements(By.xpath("//ul[@class = 'oxd-main-menu']/li//span"));
 		
+		
 		for(WebElement eachPageLink: link_orangehrmAllPages) {
+			System.out.println(eachPageLink.getText());
 			if(eachPageLink.getText().equalsIgnoreCase(pageName)) {
 				eachPageLink.click();
+				generic.pause(5);
+				verifyPageHeader(pageName, "h6");
+				break;
 			}
 		}
 	}

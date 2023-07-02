@@ -2,35 +2,33 @@ package com.orangehrm.stepDefinitions;
 
 import com.orangehrm.base.Generic;
 
-import io.cucumber.java.Before;
+import io.cucumber.java.*;
 import io.cucumber.java.Scenario;
 
 public class Hooks {
 
-	Generic generic;
+	Generic generic = new Generic();
 	public static Scenario scenario;
 
 	@Before()
 	public void initializeTest() throws Exception {
-
-		generic = new Generic();
 		generic.launchApplication();
 
 	}
 
-//	@After()
+	@After()
 	public void closeBrowser() {
 		generic.quitBrowser();
 	}
 	
-//	@BeforeStep()
+	@BeforeStep()
 	public void loggerHtml(Scenario scenario) {
 		Hooks.scenario = scenario;
 	}
 	
 	
-//	@AfterStep()
+	@AfterStep()
 	public void captureScreenshot(Scenario scenario) throws Exception {
-//		generic.attachScreenshot(scenario);
+		generic.attachScreenshot(scenario);
 	}
 }
