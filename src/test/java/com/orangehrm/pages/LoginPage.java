@@ -73,6 +73,17 @@ public class LoginPage extends Generic {
 		button_Login.click();
 	}
 	
+	public void loginOrangeHRM1() {
+//		base.sendTextToAnWebElement(textBox_UserName, "Admin");
+//		base.sendTextToAnWebElement(textBox_Password, "admin123");
+//		base.clickAnWebElement(button_Login);
+		textBox_UserName.sendKeys("Admin");
+		textBox_Password.sendKeys("admin123");
+		button_Login.click();
+//		base.pause(10);
+	}
+	
+	
 	public void forgotPassword(String userName) {
 		link_forgotYourPassword.click();
 		waitForElementToBeVisible(text_ResetPasswordHeader, 5);
