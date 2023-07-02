@@ -7,16 +7,16 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.orangehrm.base.Generic;
 
-public class LoginPage extends Generic {
+public class LoginPage {
+	WebDriver driver;
+	Generic generic = new Generic();
+	CommonPage commonPage = new CommonPage(Generic.getDriver());
 	
 	public LoginPage(WebDriver driver) {
 		this.driver = driver;
 		PageFactory.initElements(driver, this);
 		//to show the webelements to driver.
-		
 	}
-	WebDriver driver;
-	CommonPage commonPage = new CommonPage(driver);
 	
 	@FindBy(tagName = "h5") 
 	WebElement text_LoginHeader;
@@ -86,7 +86,7 @@ public class LoginPage extends Generic {
 	
 	public void forgotPassword(String userName) {
 		link_forgotYourPassword.click();
-		waitForElementToBeVisible(text_ResetPasswordHeader, 5);
+		generic.waitForElementToBeVisible(text_ResetPasswordHeader, 5);
 		textBox_ForgotPassword_UserName.sendKeys(userName);
 		button_resetPassword.click();
 		commonPage.verifyAPageByWebElement(text_ResetPasswordLinkSent, "Reset Password link sent successfully");

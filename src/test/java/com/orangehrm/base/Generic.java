@@ -26,7 +26,7 @@ import com.orangehrm.utilities.PropertyFileReading;
 
 public class Generic {
 
-	private WebDriver driver;
+	public static WebDriver driver;
 	WebDriverWait wait;
 	Alert alert ;
 	static String projectPropertyFilePath = ".\\Project.properties";
@@ -88,7 +88,7 @@ public class Generic {
 		return getDriver();
 	}
 
-	public WebDriver getDriver() {
+	public static WebDriver getDriver() {
 		if (driver != null) {
 			return driver;
 		}

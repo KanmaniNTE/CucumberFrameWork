@@ -1,7 +1,5 @@
 package com.orangehrm.stepDefinitions;
 
-import org.junit.Test;
-
 import com.orangehrm.base.Generic;
 import com.orangehrm.pages.LoginPage;
 
@@ -9,13 +7,15 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
-public class LoginPage_StepDefinition extends Generic {
+public class LoginPage_StepDefinition {
 	
-//	Generic generic = new Generic();
-	LoginPage loginPage = new LoginPage(getDriver());
+	Generic generic = new Generic();
+//	LoginPage loginPage = new LoginPage(generic.getDriver());
+	LoginPage loginPage = new LoginPage(Generic.getDriver());
 	
 	@Given("user launches OrangeHRM page")
 	public void user_launches_orange_hrm_page() throws Exception {
+//		LoginPage loginPage = new LoginPage(generic.getDriver());
 //		generic.LaunchApplication();
 		loginPage.loginOrangeHRM1();
 	}
